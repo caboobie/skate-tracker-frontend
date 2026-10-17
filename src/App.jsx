@@ -9,6 +9,10 @@ function App() {
   const [name, setName] = useState('');
   const [team, setTeam] = useState('');
   const [position, setPosition] = useState('');
+  const [selected, setSelected] = useState(null);
+  const [hollows, setHollows] = useState([]);
+  const [hollow, setHollow] = useState('');
+  const [price, setPrice] = useState('');
 
   async function loadCustomers() {
     const res = await fetch(
@@ -21,6 +25,11 @@ function App() {
   useEffect(() => {
     loadCustomers();
   }, [search]);
+  useEffect(() => {
+    fetch(`${API_URL}/api/hollows`)
+    .then((res) => res.json())
+    .then((data) => setHollows(data))
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -38,6 +47,27 @@ function App() {
       setTeam('');
       setPosition('');
       await loadCustomers();
+    }
+  }
+
+  async function handleSharpening(e) {
+    e.preventDefault();
+
+    const res = await fetch(`${API_URL}/api/customers/${selected.id}/sharpenings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ hollow, price: price || null }),
+    });
+
+    if (res.ok) {
+      setHollow('');
+      setPrice('');
+      alert('Sharpening saved successfully');
+    } else {
+      const err = await res.json();
+      alert(err.error || 'Could not save sharpening');
     }
   }
 
@@ -75,14 +105,34 @@ function App() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <ul>
-        {customers.length === 0 && <p>No customers found.</p>}
+            <ul>
         {customers.map((c) => (
-          <li key={c.id}>
+          <li key={c.id} onClick={() => setSelected(c)}>
             {c.name} - {c.team} ({c.position})
           </li>
         ))}
       </ul>
+
+      {customers.length === 0 && <p>No customers found.</p>}
+
+      {selected && (
+        <form onSubmit={handleSharpening}>
+          <h2>Sharpening for {selected.name}</h2>
+          <select value={hollow} onChange={(e) => setHollow(e.target.value)} required>
+            <option value="">Choose hollow...</option>
+            {hollows.map((h) => (
+              <option key={h} value={h}>{h}</option>
+            ))}
+          </select>
+          <input
+            type="number"
+            placeholder="Price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          />
+          <button type="submit">Add Sharpening</button>
+        </form>
+      )}
     </div>
   );
 }

@@ -1,138 +1,15 @@
-import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import CustomerList from './CustomerList';
 import './App.css';
 
-const API_URL = 'https://skate-sharpening-tracker-production.up.railway.app';
-
 function App() {
-  const [customers, setCustomers] = useState([]);
-  const [search, setSearch] = useState('');
-  const [name, setName] = useState('');
-  const [team, setTeam] = useState('');
-  const [position, setPosition] = useState('');
-  const [selected, setSelected] = useState(null);
-  const [hollows, setHollows] = useState([]);
-  const [hollow, setHollow] = useState('');
-  const [price, setPrice] = useState('');
-
-  async function loadCustomers() {
-    const res = await fetch(
-      `${API_URL}/api/customers?search=${encodeURIComponent(search)}`
-    );
-    const data = await res.json();
-    setCustomers(data);
-  }
-
-  useEffect(() => {
-    loadCustomers();
-  }, [search]);
-  useEffect(() => {
-    fetch(`${API_URL}/api/hollows`)
-    .then((res) => res.json())
-    .then((data) => setHollows(data))
-  }, []);
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    const res = await fetch(`${API_URL}/api/customers`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, team, position }),
-    });
-
-    if (res.ok) {
-      setName('');
-      setTeam('');
-      setPosition('');
-      await loadCustomers();
-    }
-  }
-
-  async function handleSharpening(e) {
-    e.preventDefault();
-
-    const res = await fetch(`${API_URL}/api/customers/${selected.id}/sharpenings`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ hollow, price: price || null }),
-    });
-
-    if (res.ok) {
-      setHollow('');
-      setPrice('');
-      alert('Sharpening saved successfully');
-    } else {
-      const err = await res.json();
-      alert(err.error || 'Could not save sharpening');
-    }
-  }
-
   return (
     <div>
       <h1>Skate Sharpening Tracker</h1>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Team"
-          value={team}
-          onChange={(e) => setTeam(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Position"
-          value={position}
-          onChange={(e) => setPosition(e.target.value)}
-        />
-        <button type="submit">Add Customer</button>
-      </form>
-
-
-      <input
-        type="text"
-        placeholder="Search customers..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-            <ul>
-        {customers.map((c) => (
-          <li key={c.id} onClick={() => setSelected(c)}>
-            {c.name} - {c.team} ({c.position})
-          </li>
-        ))}
-      </ul>
-
-      {customers.length === 0 && <p>No customers found.</p>}
-
-      {selected && (
-        <form onSubmit={handleSharpening}>
-          <h2>Sharpening for {selected.name}</h2>
-          <select value={hollow} onChange={(e) => setHollow(e.target.value)} required>
-            <option value="">Choose hollow...</option>
-            {hollows.map((h) => (
-              <option key={h} value={h}>{h}</option>
-            ))}
-          </select>
-          <input
-            type="number"
-            placeholder="Price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          <button type="submit">Add Sharpening</button>
-        </form>
-      )}
+      <Routes>
+        <Route path="/" element={<CustomerList />} />
+        <Route path="/customers/:id" element={<p>Customer page coming soon</p>} />
+      </Routes>
     </div>
   );
 }

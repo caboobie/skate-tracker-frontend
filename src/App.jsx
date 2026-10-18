@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import CustomerList from './CustomerList';
 import './App.css';
+import CustomerPage from './CustomerPage';
+
 
 function App() {
   return (
@@ -8,7 +10,7 @@ function App() {
       <h1>Skate Sharpening Tracker</h1>
       <Routes>
         <Route path="/" element={<CustomerList />} />
-        <Route path="/customers/:id" element={<p>Customer page coming soon</p>} />
+        <Route path="/customers/:id" element={<CustomerPage />} />
       </Routes>
     </div>
   );

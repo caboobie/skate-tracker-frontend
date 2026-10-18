@@ -54,7 +54,19 @@ function CustomerPage() {
         }
     }
 
+    async function handleDelete(sharpeningId) {
+        if (!window.confirm('Delete this sharpening?')) return;
 
+        const res = await fetch(`${API_URL}/api/sharpenings/${sharpeningId}`, {
+            method: 'DELETE',
+        });
+
+        if (res.ok) {
+            await loadHistory();
+        } else {
+            alert('Could not delete sharpening');
+        }
+    }
 
     if (!customer) return <p>Loading...</p>;
 
@@ -85,6 +97,7 @@ function CustomerPage() {
   {history.map((s) => (
     <li key={s.id}>
       {s.sharpened_on} - {s.hollow} {s.price && `- £${s.price}`}
+      <button onClick={() => handleDelete(s.id)}>Delete</button>
     </li>
   ))}
 </ul>

@@ -63,7 +63,7 @@ function CustomerList() {
           value={position}
           onChange={(e) => setPosition(e.target.value)}
         />
-        <Link to="/stats">View Stats</Link>
+        
         <button type="submit">Add Customer</button>
       </form>
 

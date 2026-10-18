@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import CustomerList from './CustomerList';
 import './App.css';
 import CustomerPage from './CustomerPage';
+import StatsPage from './StatsPage';
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<CustomerList />} />
         <Route path="/customers/:id" element={<CustomerPage />} />
+        <Route path="/stats" element={<StatsPage />} />
       </Routes>
     </div>
   );

@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react';
 import { useParams, Link } from 'react-router-dom';
-
-const API_URL = 'https://skate-sharpening-tracker-production.up.railway.app';
+import { apiFetch } from './api';
 
 function CustomerPage() {
     const { id } = useParams();
@@ -12,13 +11,13 @@ function CustomerPage() {
     const [price, setPrice] = useState('');
 
     useEffect(() => {
-        fetch(`${API_URL}/api/customers/${id}`)
+        apiFetch(`/api/customers/${id}`)
             .then((res) => res.json())
             .then((data) => setCustomer(data));
     }, [id]);
 
     async function loadHistory() {
-        const res = await fetch(`${API_URL}/api/customers/${id}/sharpenings`);
+        const res = await apiFetch(`/api/customers/${id}/sharpenings`);
         const data = await res.json();
         setHistory(data);
     }
@@ -28,7 +27,7 @@ function CustomerPage() {
     }, [id]);
 
     useEffect(() => {
-        fetch(`${API_URL}/api/hollows`)
+        apiFetch('/api/hollows')
             .then((res) => res.json())
             .then((data) => setHollows(data));
     }, []);
@@ -36,7 +35,7 @@ function CustomerPage() {
     async function handleSharpening(e) {
         e.preventDefault();
         
-        const res = await fetch(`${API_URL}/api/customers/${id}/sharpenings`, {
+        const res = await apiFetch(`/api/customers/${id}/sharpenings`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -57,7 +56,7 @@ function CustomerPage() {
     async function handleDelete(sharpeningId) {
         if (!window.confirm('Delete this sharpening?')) return;
 
-        const res = await fetch(`${API_URL}/api/sharpenings/${sharpeningId}`, {
+        const res = await apiFetch(`/api/sharpenings/${sharpeningId}`, {
             method: 'DELETE',
         });
 

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-const API_URL = 'https://skate-sharpening-tracker-production.up.railway.app';
+import { apiFetch } from './api';
 
 function CustomerList() {
   const [customers, setCustomers] = useState([]);
@@ -11,8 +10,8 @@ function CustomerList() {
   const [position, setPosition] = useState('');
 
   async function loadCustomers() {
-    const res = await fetch(
-      `${API_URL}/api/customers?search=${encodeURIComponent(search)}`
+    const res = await apiFetch(
+      `/api/customers?search=${encodeURIComponent(search)}`
     );
     const data = await res.json();
     setCustomers(data);
@@ -25,7 +24,7 @@ function CustomerList() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const res = await fetch(`${API_URL}/api/customers`, {
+    const res = await apiFetch('/api/customers', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

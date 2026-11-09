@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-const API_URL = 'https://skate-sharpening-tracker-production.up.railway.app';
+import { apiFetch } from './api';
 
 function StatsPage() {
   const [overall, setOverall] = useState([]);
   const [byPosition, setByPosition] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/stats/hollows`)
+    apiFetch('/api/stats/hollows')
       .then((res) => res.json())
       .then((data) => setOverall(data));
 
-    fetch(`${API_URL}/api/stats/hollows-by-position`)
+    apiFetch('/api/stats/hollows-by-position')
       .then((res) => res.json())
       .then((data) => setByPosition(data));
   }, []);

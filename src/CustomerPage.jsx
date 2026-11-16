@@ -9,6 +9,7 @@ function CustomerPage() {
     const [hollows, setHollows] = useState([]);
     const [hollow, setHollow] = useState('');
     const [price, setPrice] = useState('');
+    const [notes, setNotes] = useState('');
 
     useEffect(() => {
         apiFetch(`/api/customers/${id}`)
@@ -40,12 +41,13 @@ function CustomerPage() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ hollow, price: price || null }),
+            body: JSON.stringify({ hollow, price: price || null, notes: notes || null }),
         });
 
         if (res.ok) {
             setHollow('');
             setPrice('');
+            setNotes('');
             await loadHistory();
         } else {
             const err = await res.json();
@@ -87,6 +89,12 @@ function CustomerPage() {
     value={price}
     onChange={(e) => setPrice(e.target.value)}
   />
+  <input
+    type="text"
+    placeholder="Notes (optional)"
+    value={notes}
+    onChange={(e) => setNotes(e.target.value)}
+  />
   <button type="submit">Add Sharpening</button>
 </form>
 
@@ -96,6 +104,7 @@ function CustomerPage() {
   {history.map((s) => (
     <li key={s.id}>
       {s.sharpened_on} - {s.hollow} {s.price && `- £${s.price}`}
+      {s.notes && <p className="note">{s.notes}</p>}
       <button onClick={() => handleDelete(s.id)}>Delete</button>
     </li>
   ))}

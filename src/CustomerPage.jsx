@@ -55,6 +55,25 @@ function CustomerPage() {
         }
     }
 
+    async function logSame() {
+        const last = history[0];
+        if (!last) return;
+
+        const res = await apiFetch(`/api/customers/${id}/sharpenings`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ hollow: last.hollow, price: last.price }),
+            });
+
+        if (res.ok) {
+            await loadHistory();
+        } else {
+            alert('Could not save sharpening');
+        }
+    }
+
     async function handleDelete(sharpeningId) {
         if (!window.confirm('Delete this sharpening?')) return;
 
@@ -76,6 +95,14 @@ function CustomerPage() {
             <Link to="/">🔙</Link>
             <h2>{customer.name}</h2>
             <p>Team: {customer.team} - {customer.position}</p>
+
+            {history[0] && (
+                <button type="button" onClick={logSame}>
+                    Same as last time ({history[0].hollow}
+                    {history[0].price && `- £${history[0].price}`})
+                </button>
+            )}
+
             <form onSubmit={handleSharpening}>
   <select value={hollow} onChange={(e) => setHollow(e.target.value)} required>
     <option value="">Choose hollow...</option>

@@ -1,12 +1,12 @@
 :root {
-    --bg: #0b1120;
-    --surface: #131c31;
-    --border: #243049;
-    --text: #e6edf7;
-    --muted: #8a99b5;
-    --accent: #38bdf8;
-    --accent-text: #04202e;
-    --danger: #f87171;
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --border: #e1e4ea;
+    --text: #111318;
+    --muted: #6b7280;
+    --accent: #d90f0f;
+    --accent-text: #ffffff;
+    --danger: #b91c1c;
 }
 
 body {
@@ -96,4 +96,15 @@ nav {
 
 nav a {
     padding: 0.75rem 0;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo {
+    height: 48px;
+    width: auto;
 }

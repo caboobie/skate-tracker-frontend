@@ -5,6 +5,7 @@ import CustomerPage from './CustomerPage';
 import StatsPage from './StatsPage';
 import { useState } from 'react';
 import { getKey, saveKey } from './api';
+import logo from './assets/logo.png';
 
 function App() {
   const [hasKey, setHasKey] = useState(Boolean(getKey()));
@@ -33,7 +34,10 @@ function App() {
 
   return (
     <div>
-      <h1>Skate Sharpening Tracker</h1>
+      <header className="brand">
+        <img src={logo} alt="logo" className="logo"/>
+        <h1>Skate Sharpening Tracker</h1>
+      </header>
       <nav>
         <Link to="/">Customers</Link>
         <Link to="/stats">Stats</Link>

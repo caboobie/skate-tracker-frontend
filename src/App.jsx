@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, NavLink } from 'react-router-dom';
 import CustomerList from './CustomerList';
 import './App.css';
 import CustomerPage from './CustomerPage';
@@ -36,11 +36,10 @@ function App() {
     <div>
       <header className="brand">
         <img src={logo} alt="logo" className="logo"/>
-        <h1>Skate Sharpening Tracker</h1>
       </header>
       <nav>
-        <Link to="/">Customers</Link>
-        <Link to="/stats">Stats</Link>
+        <NavLink to="/">Customers</NavLink>
+        <NavLink to="/stats">Stats</NavLink>
       </nav>
       <Routes>
         <Route path="/" element={<CustomerList />} />

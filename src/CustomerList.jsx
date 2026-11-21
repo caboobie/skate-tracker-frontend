@@ -8,6 +8,7 @@ function CustomerList() {
   const [name, setName] = useState('');
   const [team, setTeam] = useState('');
   const [position, setPosition] = useState('');
+  const [showAdd, setShowAdd] = useState(false);
 
   async function loadCustomers() {
     const res = await apiFetch(
@@ -36,50 +37,62 @@ function CustomerList() {
       setName('');
       setTeam('');
       setPosition('');
+      setShowAdd(false);
       await loadCustomers();
     }
   }
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Team"
-          value={team}
-          onChange={(e) => setTeam(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Position"
-          value={position}
-          onChange={(e) => setPosition(e.target.value)}
-        />
-        
-        <button type="submit">Add Customer</button>
-      </form>
+      <details
+        className="add-customer"
+        open={showAdd}
+        onToggle={(e) => setShowAdd(e.target.open)}
+      >
+        <summary>Add Customer</summary>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Team"
+            value={team}
+            onChange={(e) => setTeam(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Position"
+            value={position}
+            onChange={(e) => setPosition(e.target.value)}
+          />
+          <button type="submit">Save</button>
+        </form>
+      </details>
 
+      <div className="search-wrap">
+        <span className="search-icon">🔍</span>
+        <input
+          className="search"
+          type="text"
+          placeholder="Search customers..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
-      <input
-        type="text"
-        placeholder="Search customers..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-            <ul>
+      <ul>
         {customers.map((c) => (
           <li key={c.id}>
-  <Link to={`/customers/${c.id}`}>
-    {c.name} - {c.team} ({c.position})
-  </Link>
-</li>
+            <Link to={`/customers/${c.id}`} className="customer-link">
+              <strong>{c.name}</strong>
+              <span>{[c.team, c.position].filter(Boolean).join(' - ')}</span>
+            </Link>
+          </li>
         ))}
       </ul>
 

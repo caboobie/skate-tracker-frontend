@@ -11,6 +11,16 @@ React single-page app for tracking skate sharpenings for customers of my own sha
 - **Stats page** – counts of most common hollows overall and grouped by customer position.
 - **Dark mode** – styles follow the OS `prefers-color-scheme` setting.
 
+## Screenshots
+
+Screenshots use fictional demo data.
+
+| Customer list | Customer page |
+| --- | --- |
+| ![Searchable customer list with an Add Customer form](docs/images/customer-list-light.png) | ![Customer page showing details, "Same as last time" button and sharpening history](docs/images/customer-page-light.png) |
+
+![Stats page showing most common hollows overall and by position](docs/images/stats-light.png)
+
 ## Tech stack
 
 - React 19, React Router 7
